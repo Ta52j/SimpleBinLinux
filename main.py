@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import darkdetect
+from PySide6.QtCore import QTimer
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
@@ -48,6 +49,26 @@ else:
     systray.setIcon(ICON_DARK_EMPTY)
 systray.setVisible(True)
 systray.setContextMenu(systray_menu)
+
+
+# Function that checks the trash directory periodically (to handle icon change)
+def check_trash():
+    if os.path.exists(TRASH_PATH) and os.listdir(TRASH_PATH):
+        if darkdetect.theme() == "light":
+            systray.setIcon(ICON_LIGHT)
+        else:
+            systray.setIcon(ICON_DARK)
+    else:
+        if darkdetect.theme() == "light":
+            systray.setIcon(ICON_LIGHT_EMPTY)
+        else:
+            systray.setIcon(ICON_DARK_EMPTY)
+
+
+# Checks each 100ms
+systimer = QTimer()
+systimer.timeout.connect(check_trash)
+systimer.start(100)
 
 # Run the app
 app.exec()
