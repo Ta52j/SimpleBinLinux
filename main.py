@@ -32,12 +32,22 @@ def empty_trash():
 # Create the menu
 systray_menu = QMenu()
 
-# Add a empty trash option
+# Add amount of items
+systray_menu_items = QAction("Items:")
+systray_menu_items.setDisabled(True)
+systray_menu.addAction(systray_menu_items)
+
+# Add size of items
+systray_menu_size = QAction("Size:")
+systray_menu_size.setDisabled(True)
+systray_menu.addAction(systray_menu_size)
+
+# Add empty trash option
 systray_menu_empty = QAction("Empty")
 systray_menu_empty.triggered.connect(empty_trash)
 systray_menu.addAction(systray_menu_empty)
 
-# Add a quit option
+# Add quit option
 systray_menu_quit = QAction("Quit")
 systray_menu_quit.triggered.connect(app.quit)
 systray_menu.addAction(systray_menu_quit)
@@ -52,7 +62,7 @@ systray.setVisible(True)
 systray.setContextMenu(systray_menu)
 
 
-# Function that checks the trash directory periodically (to handle icon change)
+# Function that checks the trash directory periodically (to handle icon change and other stuff)
 def check_trash():
     if os.path.exists(TRASH_PATH) and os.listdir(TRASH_PATH):
         if darkdetect.theme() == "light":
@@ -64,6 +74,15 @@ def check_trash():
             systray.setIcon(ICON_LIGHT_EMPTY)
         else:
             systray.setIcon(ICON_DARK_EMPTY)
+
+    file_list = []
+    for root_dir_path, dirs, files in os.walk(TRASH_PATH, True):
+        for file in files:
+            file_list.append(os.path.join(root_dir_path, file))
+        for dir in dirs:
+            file_list.append(os.path.join(root_dir_path, dir))
+
+    systray_menu_items.setText("Items: " + str(len(file_list)))
 
 
 # Checks each 100ms
