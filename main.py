@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 import darkdetect
@@ -25,7 +26,7 @@ def empty_trash():
             os.remove(file_path)
         for dir in dirs:
             dir_path = os.path.join(root_dir_path, dir)
-            os.rmdir(dir_path)
+            shutil.rmtree(dir_path)
 
 
 # Create the menu
