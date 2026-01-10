@@ -54,7 +54,7 @@ systray_menu.addAction(systray_menu_quit)
 
 # Create the system tray
 systray = QSystemTrayIcon()
-if darkdetect.theme() == "light":
+if darkdetect.theme() == "Light":
     systray.setIcon(ICON_LIGHT_EMPTY)
 else:
     systray.setIcon(ICON_DARK_EMPTY)
@@ -65,12 +65,12 @@ systray.setContextMenu(systray_menu)
 # Function that checks the trash directory periodically (to handle icon change and other stuff)
 def check_trash():
     if os.path.exists(TRASH_PATH) and os.listdir(TRASH_PATH):
-        if darkdetect.theme() == "light":
+        if darkdetect.theme() == "Light":
             systray.setIcon(ICON_LIGHT)
         else:
             systray.setIcon(ICON_DARK)
     else:
-        if darkdetect.theme() == "light":
+        if darkdetect.theme() == "Light":
             systray.setIcon(ICON_LIGHT_EMPTY)
         else:
             systray.setIcon(ICON_DARK_EMPTY)
