@@ -85,10 +85,10 @@ def check_trash():
     systray_menu_items.setText("Items: " + str(len(file_list)))
 
 
-# Checks each 100ms
+# Checks each 50ms
 systimer = QTimer()
 systimer.timeout.connect(check_trash)
-systimer.start(100)
+systimer.start(50)
 
 # Run the app
 app.exec()
