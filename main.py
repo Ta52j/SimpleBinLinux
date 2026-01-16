@@ -82,7 +82,13 @@ def check_trash():
         for dir in dirs:
             file_list.append(os.path.join(root_dir_path, dir))
 
+    size = 0
+    for file in os.scandir(TRASH_PATH):
+        size += os.path.getsize(file)
+
+    calculated_size = int(size / 1048576)
     systray_menu_items.setText("Items: " + str(len(file_list)))
+    systray_menu_size.setText("Size: " + str(calculated_size) + " MB")
 
 
 # Checks each 50ms
